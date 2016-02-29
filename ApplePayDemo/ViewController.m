@@ -90,6 +90,17 @@
     
 }
 
+
+//@required
+
+// Sent to the delegate after the user has acted on the payment request.  The application
+// should inspect the payment to determine whether the payment request was authorized.
+//
+// If the application requested a shipping address then the full addresses is now part of the payment.
+//
+// The delegate must call completion with an appropriate authorization status, as may be determined
+// by submitting the payment credential to a processing gateway for payment authorization.
+
 - (void)paymentAuthorizationViewController:(PKPaymentAuthorizationViewController *)controller didAuthorizePayment:(PKPayment *)payment completion:(void (^)(PKPaymentAuthorizationStatus))completion {
     NSLog(@"did authorize payment token: %@, %@", payment.token, payment.token.transactionIdentifier);
     
@@ -98,6 +109,11 @@
     completion(PKPaymentAuthorizationStatusSuccess);
 }
 
+// Sent to the delegate when payment authorization is finished.  This may occur when
+// the user cancels the request, or after the PKPaymentAuthorizationStatus parameter of the
+// paymentAuthorizationViewController:didAuthorizePayment:completion: has been shown to the user.
+//
+// The delegate is responsible for dismissing the view controller in this method.
 - (void)paymentAuthorizationViewControllerDidFinish:(PKPaymentAuthorizationViewController *)controller {
     NSLog(@"finish");
     [controller dismissViewControllerAnimated:controller completion:NULL];
